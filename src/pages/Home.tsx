@@ -14,17 +14,20 @@ interface Event {
   price: number;
 }
 
+// Données de repli pour affichage statique (ex. déploiement Vercel sans API)
+const fallbackEvents: Event[] = [
+  { id: 1, title: 'Soirée Stand-up Découverte', date: '2026-04-15', time: '20:30', description: 'Venez découvrir les nouveaux talents de la région PACA !', image_url: 'https://picsum.photos/seed/event1/800/400', price: 10 },
+  { id: 2, title: 'Le Grand Gala du Biiip', date: '2026-05-02', time: '21:00', description: 'Une soirée exceptionnelle avec nos meilleurs humoristes.', image_url: 'https://picsum.photos/seed/event2/800/400', price: 15 },
+];
+
 export default function Home() {
   const [nextEvents, setNextEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     fetch('/api/events')
-      .then(res => res.json())
-      .then(data => {
-        // Just take the first 2 for the homepage
-        setNextEvents(data.slice(0, 2));
-      })
-      .catch(console.error);
+      .then(res => res.ok ? res.json() : Promise.reject(new Error('API indisponible')))
+      .then(data => setNextEvents(Array.isArray(data) ? data.slice(0, 2) : fallbackEvents))
+      .catch(() => setNextEvents(fallbackEvents));
   }, []);
 
   return (

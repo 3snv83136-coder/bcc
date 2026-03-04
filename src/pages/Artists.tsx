@@ -14,6 +14,15 @@ interface Artist {
   image_url: string;
 }
 
+// Données de repli pour affichage statique (ex. déploiement Vercel sans API)
+const fallbackArtists: Artist[] = [
+  { id: 1, name: 'PETIT ROBERT', bio: "Ne vous fiez pas à son nom, son humour est grand et percutant.", image_url: '' },
+  { id: 2, name: 'MONDOR', bio: "Le maître du stand-up toulonnais, toujours le bon mot au bon moment.", image_url: '' },
+  { id: 3, name: 'SALEM', bio: "Un humoriste incontournable du Biiip Comedy Club, prêt à vous faire pleurer de rire.", image_url: '' },
+  { id: 4, name: 'RIAD', bio: "Un regard piquant sur le quotidien, avec une touche de folie.", image_url: '' },
+  { id: 5, name: 'SPENCER', bio: "L'énergie à l'état pur. Ses anecdotes vont vous surprendre.", image_url: '' },
+];
+
 export default function Artists() {
   const [artists, setArtists] = useState<Artist[]>([]);
 
@@ -32,9 +41,9 @@ export default function Artists() {
 
   useEffect(() => {
     fetch('/api/artists')
-      .then(res => res.json())
-      .then(data => setArtists(data))
-      .catch(console.error);
+      .then(res => res.ok ? res.json() : Promise.reject(new Error('API indisponible')))
+      .then(data => setArtists(Array.isArray(data) ? data : fallbackArtists))
+      .catch(() => setArtists(fallbackArtists));
   }, []);
 
   return (
