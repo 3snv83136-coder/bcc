@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Mic2, Calendar, Users, ArrowRight, Star, Laugh } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import biiipHero from '../assets/biiip-hero.png';
+import { BOOKING_URL } from '../config';
 
 interface Event {
   id: number;
@@ -142,12 +143,23 @@ export default function Home() {
                       <span className="font-bold text-lg text-zinc-900">
                         {event.price === 0 ? 'Gratuit' : `${event.price}€`}
                       </span>
-                      <Link
-                        to="/programming"
-                        className="text-sm font-medium text-white bg-zinc-900 hover:bg-cyan-500 px-4 py-2 rounded-lg transition-colors"
-                      >
-                        Réserver
-                      </Link>
+                      {BOOKING_URL ? (
+                        <a
+                          href={BOOKING_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm font-medium text-white bg-zinc-900 hover:bg-cyan-500 px-4 py-2 rounded-lg transition-colors"
+                        >
+                          Réserver
+                        </a>
+                      ) : (
+                        <Link
+                          to="/programming"
+                          className="text-sm font-medium text-white bg-zinc-900 hover:bg-cyan-500 px-4 py-2 rounded-lg transition-colors"
+                        >
+                          Réserver
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </motion.div>

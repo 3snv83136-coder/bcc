@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { Calendar, Clock, MapPin, Ticket, X } from 'lucide-react';
+import { BOOKING_URL } from '../config';
 
 interface Event {
   id: number;
@@ -118,13 +119,25 @@ export default function Programming() {
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => openReservation(event)}
-                    className="w-full flex items-center justify-center gap-2 bg-zinc-900 hover:bg-cyan-500 text-white px-4 py-3 rounded-xl font-medium transition-colors"
-                  >
-                    <Ticket size={18} />
-                    Réserver ma place
-                  </button>
+                  {BOOKING_URL ? (
+                    <a
+                      href={BOOKING_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2 bg-zinc-900 hover:bg-cyan-500 text-white px-4 py-3 rounded-xl font-medium transition-colors"
+                    >
+                      <Ticket size={18} />
+                      Réserver ma place
+                    </a>
+                  ) : (
+                    <button
+                      onClick={() => openReservation(event)}
+                      className="w-full flex items-center justify-center gap-2 bg-zinc-900 hover:bg-cyan-500 text-white px-4 py-3 rounded-xl font-medium transition-colors"
+                    >
+                      <Ticket size={18} />
+                      Réserver ma place
+                    </button>
+                  )}
                 </div>
               </motion.div>
             ))}

@@ -1,5 +1,6 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Mic2, Calendar, Users, Send, Settings, Menu, X } from 'lucide-react';
+import { BOOKING_URL } from '../config';
 import { useState } from 'react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -118,6 +119,29 @@ export default function Layout() {
         <Outlet />
       </main>
 
+      {/* CTA responsive - 20€ la Pipe */}
+      <div className="sticky bottom-0 z-40 md:relative md:bottom-auto">
+        {BOOKING_URL ? (
+          <a
+            href={BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 md:gap-3 w-full bg-cyan-500 hover:bg-cyan-600 text-white py-3 px-4 md:py-3.5 md:px-6 font-semibold text-base md:text-lg shadow-lg shadow-cyan-500/30 transition-colors"
+          >
+            <span className="tracking-tight">20€ la Pipe</span>
+            <Calendar size={18} className="md:w-5 md:h-5 shrink-0" />
+          </a>
+        ) : (
+          <Link
+            to="/programming"
+            className="flex items-center justify-center gap-2 md:gap-3 w-full bg-cyan-500 hover:bg-cyan-600 text-white py-3 px-4 md:py-3.5 md:px-6 font-semibold text-base md:text-lg shadow-lg shadow-cyan-500/30 transition-colors"
+          >
+            <span className="tracking-tight">20€ la Pipe</span>
+            <Calendar size={18} className="md:w-5 md:h-5 shrink-0" />
+          </Link>
+        )}
+      </div>
+
       {/* Footer */}
       <footer className="bg-zinc-900 text-zinc-400 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -146,7 +170,13 @@ export default function Layout() {
           <div>
             <h3 className="text-white font-semibold mb-4">Liens Rapides</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/programming" className="hover:text-cyan-400 transition-colors">Réserver une place</Link></li>
+              <li>
+              {BOOKING_URL ? (
+                <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">Réserver une place</a>
+              ) : (
+                <Link to="/programming" className="hover:text-cyan-400 transition-colors">Réserver une place</Link>
+              )}
+            </li>
               <li><Link to="/apply" className="hover:text-cyan-400 transition-colors">Devenir artiste</Link></li>
               <li><Link to="/artists" className="hover:text-cyan-400 transition-colors">Nos humoristes</Link></li>
             </ul>
